@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>GetEm Gone Pest Control v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#080a0f; --dark:#0d1117; --panel:#111620;
+  --blue:#1a6fff; --bluehi:#4d8fff; --blueglow:rgba(26,111,255,0.18);
+  --bluedim:rgba(26,111,255,0.08); --white:#f0f4ff; --silver:#8a9ab8;
+  --mid:#4a5570; --border:rgba(26,111,255,0.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:rgba(8,10,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(–border);height:64px;gap:1rem;}
+.nav-logo{font-family:‘Barlow Condensed’,sans-serif;font-size:1.5rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;text-decoration:none;color:var(–white);}
+.nav-logo span{color:var(–blue);}
+nav ul{display:flex;list-style:none;gap:0.3rem;flex-wrap:nowrap;}
+nav ul a{display:block;padding:0.4rem 0.7rem;text-decoration:none;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(–silver);border:1px solid transparent;border-radius:2px;transition:color 0.2s,border-color 0.2s,background 0.2s;}
+nav ul a:hover{color:var(–blue);border-color:var(–border);background:var(–bluedim);}
+.nav-cta{background:var(–blue)!important;color:var(–white)!important;border-color:var(–blue)!important;font-weight:700!important;}
+.nav-cta:hover{background:var(–bluehi)!important;}
+.account-btn{background:var(–bluedim);border:1px solid var(–border);color:var(–white);padding:0.4rem 0.9rem;border-radius:2px;font-family:‘Barlow’,sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.08em;cursor:pointer;white-space:nowrap;transition:background 0.2s;}
+.account-btn:hover{background:var(–blue);}
+
+/* OWNER TAB */
+.owner-tab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:500;background:var(–panel);border:1px solid var(–border);border-right:none;border-radius:6px 0 0 6px;padding:0.6rem 0.5rem;display:flex;flex-direction:column;align-items:center;gap:0.3rem;cursor:pointer;transition:background 0.2s,border-color 0.2s;box-shadow:-3px 0 15px rgba(0,0,0,0.3);}
+.owner-tab:hover{background:var(–bluedim);border-color:var(–blue);}
+.owner-tab-label{font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(–silver);writing-mode:vertical-rl;}
+
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:6rem 5% 4rem;position:relative;overflow:hidden;background:var(–dark);}
+#hero::before{content:’’;position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(–border) 1px,transparent 1px),linear-gradient(90deg,var(–border) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);opacity:0.6;}
+.hero-tag{display:inline-flex;align-items:center;gap:0.5rem;background:var(–bluedim);border:1px solid var(–border);color:var(–blue);font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;padding:0.4rem 0.9rem;border-radius:2px;margin-bottom:1rem;animation:fadeUp 0.5s ease both;}
+.hero-tag::before{content:’’;width:6px;height:6px;border-radius:50%;background:var(–blue);animation:blink 1.5s infinite;}
+.hero-slogan{font-size:0.95rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(–silver);margin-bottom:1.2rem;animation:fadeUp 0.5s 0.06s ease both;}
+.hero-slogan span{color:var(–blue);}
+h1.hero-h1{font-family:‘Barlow Condensed’,sans-serif;font-size:clamp(4rem,8vw,8rem);font-weight:900;line-height:0.9;text-transform:uppercase;letter-spacing:2px;color:var(–white);animation:fadeUp 0.5s 0.1s ease both;}
+h1.hero-h1 .blue{color:var(–blue);}
+h1.hero-h1 .outline{-webkit-text-stroke:2px var(–white);color:transparent;}
+.hero-rule{width:80px;height:2px;background:linear-gradient(90deg,var(–blue),transparent);margin:2rem 0;animation:fadeUp 0.5s 0.15s ease both;}
+.hero-desc{font-size:1rem;font-weight:300;line-height:1.7;color:var(–silver);max-width:420px;animation:fadeUp 0.5s 0.2s ease both;}
+.hero-btns{display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;animation:fadeUp 0.5s 0.25s ease both;}
+.btn-blue{background:var(–blue);color:var(–white);padding:0.85rem 2rem;border-radius:2px;font-family:‘Barlow Condensed’,sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 0 20px rgba(26,111,255,0.3);}
+.btn-blue:hover{background:var(–bluehi);transform:translateY(-2px);}
+.btn-ghost{border:1px solid var(–border);color:var(–silver);padding:0.85rem 2rem;border-radius:2px;font-family:‘Barlow Condensed’,sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:border-color 0.2s,color 0.2s;}
+.btn-ghost:hover{border-color:var(–blue);color:var(–blue);}
+.hero-metrics{display:flex;gap:2.5rem;margin-top:3rem;border-top:1px solid var(–border);padding-top:2rem;animation:fadeUp 0.5s 0.3s ease both;}
+.metric-val{font-family:‘Barlow Condensed’,sans-serif;font-size:2.2rem;font-weight:900;color:var(–blue);line-height:1;}
+.metric-label{font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(–mid);margin-top:0.3rem;}
+.hero-right{display:flex;justify-content:center;align-items:center;position:relative;z-index:1;animation:fadeUp 0.6s 0.2s ease both;}
+.radar-wrap{position:relative;width:360px;height:360px;}
+.radar-circle{position:absolute;border-radius:50%;border:1px solid var(–border);top:50%;left:50%;transform:translate(-50%,-50%);}
+.radar-circle:nth-child(1){width:100%;height:100%;}
+.radar-circle:nth-child(2){width:70%;height:70%;}
+.radar-circle:nth-child(3){width:40%;height:40%;}
+.radar-sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 80%,rgba(26,111,255,0.4) 100%);animation:sweep 3s linear infinite;}
+.radar-crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:1px;background:var(–border);}
+.radar-crosshair::after{content:’’;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);width:100%;height:1px;background:var(–border);}
+.radar-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:var(–panel);border:2px solid var(–blue);display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 0 20px var(–blueglow);}
+.radar-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(–blue);box-shadow:0 0 10px var(–blue);animation:dotPulse 2s ease-in-out infinite;}
+.radar-dot:nth-child(5){top:20%;left:65%;animation-delay:0.3s;}
+.radar-dot:nth-child(6){top:60%;left:25%;animation-delay:0.8s;}
+.radar-dot:nth-child(7){top:75%;left:70%;animation-delay:1.4s;}
+.radar-label{position:absolute;font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(–blue);opacity:0.7;}
+.radar-label:nth-of-type(1){top:5%;left:50%;transform:translateX(-50%);}
+.radar-label:nth-of-type(2){bottom:5%;left:50%;transform:translateX(-50%);}
+.radar-label:nth-of-type(3){left:2%;top:50%;transform:translateY(-50%);}
+.radar-label:nth-of-type(4){right:2%;top:50%;transform:translateY(-50%);}
+
+/* SECTION COMMON */
+.sec-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(–blue);margin-bottom:0.75rem;}
+h2.sec-h2{font-family:‘Barlow Condensed’,sans-serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(–white);line-height:0.95;}
+h2.sec-h2 span{color:var(–blue);}
+
+/* SERVICES */
+#services{padding:7rem 5%;background:var(–black);}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem;}
+.sec-note{max-width:300px;font-size:0.9rem;color:var(–silver);line-height:1.6;font-weight:300;}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(–border);border:1px solid var(–border);}
+.svc-card{background:var(–dark);padding:2rem 1.8rem;position:relative;overflow:hidden;transition:background 0.25s;cursor:default;}
+.svc-card::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:var(–blue);transform:scaleX(0);transform-origin:left;transition:transform 0.3s ease;}
+.svc-card:hover{background:var(–panel);}
+.svc-card:hover::before{transform:scaleX(1);}
+.svc-card:hover .svc-arrow{opacity:1;transform:translateX(0);}
+.svc-ico{font-size:2rem;margin-bottom:1.2rem;display:block;}
+.svc-name{font-family:‘Barlow Condensed’,sans-serif;font-size:1.4rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(–white);margin-bottom:0.5rem;}
+.svc-text{font-size:0.85rem;color:var(–silver);line-height:1.6;font-weight:300;}
+.svc-arrow{position:absolute;bottom:1.5rem;right:1.5rem;color:var(–blue);font-size:1.2rem;opacity:0;transform:translateX(-6px);transition:opacity 0.2s,transform 0.2s;}
+
+/* ABOUT */
+#about{padding:7rem 5%;background:var(–dark);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative;overflow:hidden;}
+.about-left .terminal-box{background:var(–black);border:1px solid var(–border);border-radius:4px;overflow:hidden;box-shadow:0 0 40px rgba(26,111,255,0.1);}
+.terminal-bar{background:var(–panel);padding:0.75rem 1rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(–border);}
+.t-dot{width:10px;height:10px;border-radius:50%;}
+.t-dot:nth-child(1){background:#ff5f57;} .t-dot:nth-child(2){background:#febc2e;} .t-dot:nth-child(3){background:#28c840;}
+.t-title{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;color:var(–mid);margin:0 auto;}
+.terminal-body{padding:1.5rem;}
+.t-line{font-size:0.85rem;line-height:2;font-family:monospace;}
+.t-prompt{color:var(–blue);} .t-cmd{color:var(–white);} .t-out{color:#4ade80;} .t-out.warn{color:var(–blue);} .t-out.dim{color:var(–silver);}
+.cursor{display:inline-block;width:8px;height:14px;background:var(–blue);vertical-align:middle;animation:blink 1s infinite;}
+.about-body{font-size:0.97rem;color:var(–silver);line-height:1.8;font-weight:300;margin-top:1.5rem;}
+.about-body p+p{margin-top:1rem;}
+.feature-list{margin-top:2rem;display:flex;flex-direction:column;gap:0.75rem;}
+.feature-item{display:flex;align-items:center;gap:0.75rem;font-size:0.88rem;font-weight:500;color:var(–white);}
+.feature-item::before{content:’//’;font-family:‘Barlow Condensed’,sans-serif;font-weight:700;color:var(–blue);font-size:0.9rem;letter-spacing:-1px;}
+.about-cta{margin-top:2.5rem;}
+
+/* REVIEWS */
+#reviews{padding:7rem 5%;background:var(–black);}
+.reviews-sub{font-size:0.95rem;color:var(–silver);margin-top:0.75rem;margin-bottom:3rem;font-weight:300;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(–border);border:1px solid var(–border);margin-bottom:2rem;}
+.review-card{background:var(–dark);padding:2rem;display:flex;flex-direction:column;gap:1rem;transition:background 0.2s;}
+.review-card:hover{background:var(–panel);}
+.review-stars{color:var(–blue);font-size:1rem;letter-spacing:2px;}
+.review-text{font-size:0.88rem;color:var(–silver);line-height:1.7;font-style:italic;flex:1;}
+.review-author{display:flex;align-items:center;gap:0.75rem;margin-top:auto;}
+.review-avatar{width:38px;height:38px;border-radius:50%;background:var(–bluedim);border:1px solid var(–border);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(–blue);flex-shrink:0;}
+.review-name{font-size:0.85rem;font-weight:700;color:var(–white);}
+.review-date{font-size:0.72rem;color:var(–mid);margin-top:0.1rem;}
+.review-cta-card{background:var(–bluedim)!important;border-left:3px solid var(–blue);text-align:center;align-items:center;justify-content:center;}
+.review-cta-card h3{font-family:‘Barlow Condensed’,sans-serif;font-size:1.4rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(–white);}
+.review-cta-card p{font-size:0.85rem;color:var(–silver);line-height:1.6;}
+.reviews-summary{display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap;background:var(–dark);border:1px solid var(–border);padding:2rem;margin-top:2rem;}
+.summary-score{text-align:center;}
+.score-num{font-family:‘Barlow Condensed’,sans-serif;font-size:3.5rem;font-weight:900;color:var(–blue);line-height:1;}
+.score-stars{color:var(–blue);font-size:1rem;letter-spacing:3px;margin:0.2rem 0;}
+.score-label{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(–mid);}
+.summary-divider{width:1px;height:50px;background:var(–border);}
+.summary-stat{text-align:center;}
+.s-val{font-family:‘Barlow Condensed’,sans-serif;font-size:2rem;font-weight:900;color:var(–white);line-height:1;}
+.s-label{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(–mid);margin-top:0.3rem;}
+
+/* UPLOAD */
+#upload{padding:7rem 5%;background:var(–dark);}
+.upload-sub{font-size:0.95rem;color:var(–silver);margin-top:0.75rem;margin-bottom:3rem;font-weight:300;max-width:600px;}
+.upload-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:3rem;align-items:start;}
+.upload-box{background:var(–black);border:1px solid var(–border);border-radius:4px;padding:2.5rem;}
+.upload-tabs{display:flex;gap:0.5rem;margin-bottom:1rem;}
+.upload-tab{flex:1;padding:0.6rem;border-radius:2px;background:var(–panel);border:1px solid var(–border);color:var(–silver);font-family:‘Barlow’,sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;transition:background 0.2s,color 0.2s,border-color 0.2s;}
+.upload-tab.active{background:var(–bluedim);border-color:var(–blue);color:var(–white);}
+.upload-dropzone{border:2px dashed var(–border);border-radius:4px;padding:2.5rem 1rem;text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;margin-bottom:1rem;}
+.upload-dropzone:hover,.upload-dropzone.drag-over{border-color:var(–blue);background:var(–bluedim);}
+.dz-icon{font-size:2.5rem;margin-bottom:0.5rem;}
+.dz-text{font-family:‘Barlow Condensed’,sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(–white);}
+.dz-sub{font-size:0.78rem;color:var(–mid);margin-top:0.3rem;}
+.upload-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;margin-bottom:1rem;}
+.preview-thumb{aspect-ratio:1;border-radius:3px;overflow:hidden;border:1px solid var(–border);position:relative;}
+.preview-thumb img{width:100%;height:100%;object-fit:cover;}
+.preview-thumb .remove-btn{position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.7);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.preview-thumb.video-thumb{background:var(–panel);}
+.preview-thumb .video-label{position:absolute;bottom:3px;left:3px;background:rgba(0,0,0,0.75);color:var(–blue);font-size:0.6rem;font-weight:700;padding:1px 4px;border-radius:2px;letter-spacing:0.05em;text-transform:uppercase;}
+.preview-thumb .video-icon{font-size:1.8rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+.file-count{font-size:0.78rem;color:var(–blue);font-weight:600;letter-spacing:0.08em;margin-bottom:0.5rem;}
+.upload-privacy{font-size:0.75rem;color:var(–mid);text-align:center;margin-bottom:1rem;}
+.upload-ok{text-align:center;padding:2.5rem 1rem;}
+.upload-ok h4{font-family:‘Barlow Condensed’,sans-serif;font-size:1.8rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(–blue);margin:0.5rem 0;}
+.upload-info{display:flex;flex-direction:column;gap:1.5rem;}
+.upl-tip{background:var(–panel);border:1px solid var(–border);border-radius:4px;padding:1.5rem;display:flex;gap:1rem;}
+.upl-tip-icon{font-size:1.5rem;flex-shrink:0;}
+.upl-tip-title{font-family:‘Barlow Condensed’,sans-serif;font-size:1rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(–white);margin-bottom:0.7rem;}
+.upl-tip-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem;}
+.upl-tip-list li{font-size:0.83rem;color:var(–silver);padding-left:1rem;position:relative;}
+.upl-tip-list li::before{content:’>’;color:var(–blue);position:absolute;left:0;font-size:0.75rem;}
+.upl-contact-note{background:var(–bluedim);border:1px solid var(–border);border-left:3px solid var(–blue);padding:1rem 1.2rem;border-radius:2px;font-size:0.83rem;color:var(–silver);line-height:1.6;}
+.upl-contact-note strong{color:var(–white);}
+
+/* PAYMENT */
+#payment{padding:7rem 5%;background:var(–panel);}
+.pay-sub{font-size:0.95rem;color:var(–silver);margin-top:0.75rem;margin-bottom:3rem;font-weight:300;}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.pay-card{background:var(–dark);border:1px solid var(–border);border-radius:4px;padding:2.5rem;}
+.pay-card.pay-alt{display:flex;flex-direction:column;}
+.pay-icon{font-size:2.5rem;margin-bottom:0.8rem;}
+.pay-name{font-family:‘Barlow Condensed’,sans-serif;font-size:1.6rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(–white);margin-bottom:0.5rem;}
+.pay-desc{font-size:0.88rem;color:var(–silver);line-height:1.6;margin-bottom:1.8rem;}
+.pay-secure{font-size:0.75rem;color:var(–mid);text-align:center;margin-top:1rem;}
+.pay-ok{text-align:center;padding:2rem 1rem;}
+.pay-ok h4{font-family:‘Barlow Condensed’,sans-serif;font-size:1.8rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(–blue);margin:0.5rem 0;}
+.pay-methods{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;}
+.pay-method{display:flex;align-items:center;gap:1rem;background:var(–black);border:1px solid var(–border);padding:1rem 1.2rem;border-radius:3px;transition:border-color 0.2s;}
+.pay-method:hover{border-color:var(–blue);}
+.pay-method-icon{font-size:1.6rem;}
+.pay-method-name{font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(–white);}
+.pay-method-handle{font-size:0.9rem;color:var(–blue);font-weight:500;margin-top:0.15rem;}
+.pay-note{background:var(–bluedim);border:1px solid var(–border);border-left:3px solid var(–blue);padding:1rem 1.2rem;border-radius:2px;margin-top:auto;font-size:0.82rem;color:var(–silver);line-height:1.6;}
+.pay-note strong{color:var(–white);}
+
+/* CONTACT */
+#contact{padding:7rem 5%;background:var(–black);}
+.contact-layout{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;margin-top:3.5rem;}
+.c-info h3{font-family:‘Barlow Condensed’,sans-serif;font-size:1.3rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(–white);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(–border);}
+.c-item{display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start;}
+.c-item-icon{width:40px;height:40px;background:var(–bluedim);border:1px solid var(–border);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;}
+.c-item-label{font-size:0.68rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(–blue);}
+.c-item-val{font-size:0.95rem;font-weight:500;color:var(–white);margin-top:0.2rem;}
+.saturday-note{background:var(–bluedim);border:1px solid var(–border);border-left:3px solid var(–blue);padding:1rem 1.2rem;border-radius:2px;margin-bottom:1.5rem;font-size:0.83rem;color:var(–silver);line-height:1.6;}
+.saturday-note strong{color:var(–white);}
+.sat-badge{display:inline-block;background:var(–blue);color:var(–white);font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:2px;margin-bottom:0.5rem;}
+.guarantee{background:var(–panel);border:1px solid var(–border);border-left:3px solid var(–blue);padding:1.5rem;border-radius:2px;}
+.guarantee h4{font-family:‘Barlow Condensed’,sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(–blue);margin-bottom:0.5rem;}
+.guarantee p{font-size:0.85rem;color:var(–silver);line-height:1.6;}
+.form-panel{background:var(–dark);border:1px solid var(–border);border-radius:4px;padding:2.5rem;}
+.form-panel h3{font-family:‘Barlow Condensed’,sans-serif;font-size:1.9rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(–white);}
+.form-panel p{font-size:0.85rem;color:var(–silver);margin-top:0.3rem;margin-bottom:2rem;}
+.form-ok{text-align:center;padding:2.5rem 1rem;}
+.form-ok h4{font-family:‘Barlow Condensed’,sans-serif;font-size:2rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(–blue);margin:0.5rem 0;}
+
+/* SHARED FORM */
+.f2-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.f2-group{margin-bottom:1rem;}
+.f2-group label{display:block;font-size:0.68rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(–blue);margin-bottom:0.4rem;}
+.f2-group input,.f2-group select,.f2-group textarea{width:100%;padding:0.75rem 1rem;background:var(–black);border:1px solid var(–border);border-radius:2px;font-family:‘Barlow’,sans-serif;font-size:0.9rem;color:var(–white);outline:none;transition:border-color 0.2s;appearance:none;}
+.f2-group input::placeholder,.f2-group textarea::placeholder{color:var(–mid);}
+.f2-group input:focus,.f2-group select:focus,.f2-group textarea:focus{border-color:var(–blue);box-shadow:0 0 0 3px rgba(26,111,255,0.1);}
+.f2-group select option{background:var(–dark);}
+.f2-group textarea{min-height:100px;resize:vertical;}
+.btn-submit{width:100%;padding:1rem;background:var(–blue);color:var(–white);border:none;border-radius:2px;cursor:pointer;font-family:‘Barlow Condensed’,sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 0 20px rgba(26,111,255,0.25);}
+.btn-submit:hover{background:var(–bluehi);transform:translateY(-2px);}
+
+/* CAREERS */
+#careers{padding:4rem 5%;background:var(–dark);}
+.careers-sub{font-size:0.85rem;color:var(–silver);margin-top:0.5rem;margin-bottom:2rem;font-weight:300;max-width:600px;line-height:1.6;}
+.careers-layout{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:var(–border);border:1px solid var(–border);}
+.job-card{background:var(–black);padding:1.3rem;transition:background 0.2s;}
+.job-card:hover{background:var(–panel);}
+.job-badge{display:inline-block;background:var(–bluedim);border:1px solid var(–border);color:var(–blue);font-size:0.58rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:2px;margin-bottom:0.5rem;}
+.job-title{font-family:‘Barlow Condensed’,sans-serif;font-size:1rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(–white);margin-bottom:0.4rem;}
+.job-desc{font-size:0.76rem;color:var(–silver);line-height:1.5;margin-bottom:0.6rem;}
+.job-perks{display:flex;flex-wrap:wrap;gap:0.25rem;margin-bottom:0.75rem;}
+.perk{background:var(–panel);border:1px solid var(–border);font-size:0.62rem;color:var(–silver);padding:0.15rem 0.4rem;border-radius:2px;}
+.why-work{background:var(–panel);padding:1.3rem;}
+.why-list{list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-top:0.6rem;}
+.why-list li{display:flex;gap:0.5rem;align-items:flex-start;}
+.why-list li span{font-size:0.9rem;flex-shrink:0;}
+.why-list li strong{font-size:0.75rem;color:var(–white);font-weight:700;}
+
+/* PORTAL + MODAL SHARED */
+.portal-overlay{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);}
+.portal-overlay.open{display:block;}
+.portal-modal{display:none;position:fixed;top:0;right:0;bottom:0;width:460px;max-width:100%;z-index:1000;background:var(–dark);border-left:1px solid var(–border);overflow-y:auto;padding:2rem;box-shadow:-10px 0 40px rgba(0,0,0,0.5);animation:slideIn 0.3s ease;}
+.portal-modal.open{display:block;}
+.portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(–border);}
+.portal-title{display:flex;align-items:center;gap:0.75rem;}
+.portal-icon{font-size:1.8rem;}
+.portal-h{font-family:‘Barlow Condensed’,sans-serif;font-size:1.3rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(–white);}
+.portal-sub{font-size:0.72rem;color:var(–blue);margin-top:0.1rem;letter-spacing:0.08em;}
+.portal-close{background:none;border:1px solid var(–border);color:var(–silver);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:0.9rem;transition:background 0.2s;}
+.portal-close:hover{background:var(–bluedim);color:var(–white);}
+.portal-desc{font-size:0.88rem;color:var(–silver);margin-bottom:1.5rem;line-height:1.6;}
+.portal-links{text-align:center;margin-top:1rem;font-size:0.82rem;color:var(–mid);}
+.portal-link{color:var(–blue);cursor:pointer;}
+.portal-link:hover{text-decoration:underline;}
+.portal-msg{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:#4ade80;font-size:0.83rem;padding:0.75rem 1rem;border-radius:3px;margin-top:0.75rem;}
+.portal-welcome{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;padding:1rem;background:var(–bluedim);border:1px solid var(–border);border-radius:3px;}
+.portal-welcome-name{font-family:‘Barlow Condensed’,sans-serif;font-size:1.1rem;font-weight:700;color:var(–white);}
+.portal-welcome-sub{font-size:0.75rem;color:var(–silver);margin-top:0.2rem;}
+.portal-logout{background:none;border:1px solid var(–border);color:var(–silver);font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.8rem;border-radius:2px;cursor:pointer;transition:border-color 0.2s,color 0.2s;white-space:nowrap;}
+.portal-logout:hover{border-color:var(–blue);color:var(–blue);}
+.portal-tabs{display:flex;gap:2px;margin-bottom:1.5rem;background:var(–border);border-radius:3px;overflow:hidden;}
+.ptab{flex:1;padding:0.6rem 0.3rem;background:var(–black);border:none;color:var(–silver);font-family:‘Barlow’,sans-serif;font-size:0.7rem;font-weight:600;cursor:pointer;transition:background 0.2s,color 0.2s;}
+.ptab.active{background:var(–bluedim);color:var(–white);}
+.appt-card{background:var(–black);border:1px solid var(–border);border-radius:3px;padding:1.2rem;margin-bottom:1rem;transition:border-color 0.2s;}
+.appt-card:hover{border-color:var(–blue);}
+.appt-status{display:inline-block;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:2px;margin-bottom:0.6rem;}
+.appt-status.upcoming{background:rgba(26,111,255,0.15);color:var(–blue);}
+.appt-status.completed{background:rgba(74,222,128,0.12);color:#4ade80;}
+.appt-service{font-family:‘Barlow Condensed’,sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(–white);margin-bottom:0.5rem;}
+.appt-detail{font-size:0.8rem;color:var(–silver);margin-bottom:0.2rem;}
+.appt-actions{display:flex;gap:0.5rem;margin-top:0.9rem;}
+.appt-btn{padding:0.4rem 0.9rem;border-radius:2px;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border:1px solid;transition:background 0.2s;font-family:‘Barlow’,sans-serif;}
+.appt-btn.reschedule{background:var(–bluedim);border-color:var(–blue);color:var(–blue);}
+.appt-btn.reschedule:hover{background:var(–blue);color:var(–white);}
+.appt-btn.cancel{background:transparent;border-color:rgba(255,80,80,0.4);color:rgba(255,100,100,0.8);}
+.appt-btn.cancel:hover{background:rgba(255,80,80,0.1);}
+.sub-panel{background:var(–panel);border:1px solid var(–border);border-radius:3px;padding:1.5rem;margin-top:1rem;}
+.sub-panel-title{font-family:‘Barlow Condensed’,sans-serif;font-size:1rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(–white);margin-bottom:0.75rem;}
+.owner-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(–border);margin-bottom:0.5rem;}
+.owner-stat{background:var(–black);padding:1rem;text-align:center;}
+.owner-stat-n{font-family:‘Barlow Condensed’,sans-serif;font-size:2rem;font-weight:900;color:var(–blue);line-height:1;}
+.owner-stat-l{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(–mid);margin-top:0.2rem;}
+.owner-client-list{display:flex;flex-direction:column;gap:1px;background:var(–border);}
+.owner-client{background:var(–black);padding:1rem 1.2rem;transition:background 0.2s;}
+.owner-client:hover{background:var(–panel);}
+.owner-client-name{font-size:0.9rem;font-weight:700;color:var(–white);margin-bottom:0.2rem;}
+.owner-client-info{font-size:0.75rem;color:var(–silver);}
+
+/* FOOTER */
+footer{background:var(–dark);border-top:1px solid var(–border);padding:2rem 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-brand{font-family:‘Barlow Condensed’,sans-serif;font-size:1.2rem;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(–white);}
+.footer-brand span{color:var(–blue);}
+footer p{font-size:0.75rem;color:var(–mid);letter-spacing:0.05em;}
+
+/* ANIMS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes sweep{to{transform:rotate(360deg);}}
+@keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.6)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes slideIn{from{transform:translateX(100%);}to{transform:translateX(0);}}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+#hero,#about{grid-template-columns:1fr;}
+.hero-right,.about-left{display:none;}
+.svc-grid{grid-template-columns:1fr 1fr;}
+.contact-layout,.upload-layout{grid-template-columns:1fr;}
+.f2-row{grid-template-columns:1fr;}
+.pay-grid,.careers-layout,.reviews-grid{grid-template-columns:1fr;}
+.summary-divider{display:none;}
+}
+@media(max-width:560px){
+.svc-grid{grid-template-columns:1fr;}
+nav ul{display:none;}
+}
+</style>
+
+</head>
+<body>
+
+<!-- OWNER TAB -->
+
+<div class="owner-tab" onclick="openOwner()" title="Owner Access">
+  <span>🔑</span>
+  <span class="owner-tab-label">Owner</span>
+</div>
+
+<!-- NAV -->
+
+<nav>
+  <a href="#hero" class="nav-logo">GetEm<span>Gone</span></a>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#upload">Submit Photos</a></li>
+    <li><a href="#payment">Pay Now</a></li>
+    <li><a href="#careers">Careers</a></li>
+    <li><a href="#contact" class="nav-cta">Free Quote</a></li>
+  </ul>
+  <button class="account-btn" onclick="openPortal()">👤 My Account</button>
+</nav>
+
+<!-- HERO -->
+
+<section id="hero">
+  <div class="hero-left" style="position:relative;z-index:1;">
+    <div class="hero-tag">Licensed &amp; Insured · Same-Day Available</div>
+    <div class="hero-slogan">What We Do — We <span>GetEm Gone</span></div>
+    <h1 class="hero-h1"><span class="outline">Get</span><span class="blue">Em</span><br>Gone.</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">Precision pest elimination for homes and businesses. We locate, target, and eliminate — fast, safe, and guaranteed.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-blue">Get a Free Quote</a>
+      <a href="#services" class="btn-ghost">View Services</a>
+    </div>
+    <div class="hero-metrics">
+      <div><div class="metric-val">500+</div><div class="metric-label">Homes Treated</div></div>
+      <div><div class="metric-val">48hr</div><div class="metric-label">Response Time</div></div>
+      <div><div class="metric-val">100%</div><div class="metric-label">Guaranteed</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="radar-wrap">
+      <div class="radar-circle"></div><div class="radar-circle"></div><div class="radar-circle"></div>
+      <div class="radar-sweep"></div>
+      <div class="radar-crosshair"></div>
+      <div class="radar-center">🪲</div>
+      <div class="radar-dot"></div><div class="radar-dot"></div><div class="radar-dot"></div>
+      <span class="radar-label">N</span><span class="radar-label">S</span>
+      <span class="radar-label">W</span><span class="radar-label">E</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+
+<section id="services">
+  <div class="sec-head">
+    <div>
+      <div class="sec-eyebrow">// Pest Solutions</div>
+      <h2 class="sec-h2">Every Pest<br><span>Eliminated.</span></h2>
+    </div>
+    <p class="sec-note">Whatever you're dealing with, we have a targeted treatment ready to go.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card"><span class="svc-ico">🛏️</span><div class="svc-name">Bed Bugs</div><p class="svc-text">Heat and chemical treatments that eliminate bed bugs at every life stage.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🪳</span><div class="svc-name">Roaches</div><p class="svc-text">Gel baiting and crack-and-crevice treatments to wipe out roach colonies for good.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🐭</span><div class="svc-name">Mice &amp; Rats</div><p class="svc-text">Trapping, baiting, and full exclusion so rodents don't come back.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🐜</span><div class="svc-name">Ants</div><p class="svc-text">Colony-level baiting and perimeter treatments that destroy infestations at the source.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🐝</span><div class="svc-name">Bees &amp; Wasps</div><p class="svc-text">Licensed nest and hive removal with follow-up deterrent treatments.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🕷️</span><div class="svc-name">Spiders</div><p class="svc-text">Full removal including black widows and brown recluses with residual barrier spray.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🕸️</span><div class="svc-name">De-Webbing</div><p class="svc-text">Full removal of webs and egg sacs from eaves, soffits, and exterior surfaces.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">💨</span><div class="svc-name">Actisol Treatments</div><p class="svc-text">Precision oil-based misting that drives deep into cracks and wall voids.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🦟</span><div class="svc-name">Mosquitoes</div><p class="svc-text">Yard fogging and larvicide treatments to reduce mosquito populations.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🐾</span><div class="svc-name">Fleas &amp; Ticks</div><p class="svc-text">Indoor and outdoor treatments targeting all life stages — pet and family safe.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🦗</span><div class="svc-name">Crickets &amp; Silverfish</div><p class="svc-text">Residual sprays to eliminate nuisance insects lurking in dark spaces.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🪲</span><div class="svc-name">Beetles &amp; Weevils</div><p class="svc-text">Targeted elimination of pantry beetles, carpet beetles, weevils, and wood-borers.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🐛</span><div class="svc-name">Centipedes &amp; Millipedes</div><p class="svc-text">Perimeter and interior treatments to stop moisture-loving crawlers from invading.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🦎</span><div class="svc-name">Earwigs &amp; Sowbugs</div><p class="svc-text">Granular and liquid treatments around the foundation and landscaping.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🪰</span><div class="svc-name">Flies &amp; Gnats</div><p class="svc-text">Source ID and residual treatments for fruit flies, fungus gnats, drain flies, and house flies.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🐦</span><div class="svc-name">Bird &amp; Rodent Exclusion</div><p class="svc-text">Sealing gaps and installing barriers to keep wildlife permanently out.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🌿</span><div class="svc-name">Exterior Perimeter Spray</div><p class="svc-text">Full barrier treatment around your property to stop pests before they get inside.</p><span class="svc-arrow">→</span></div>
+    <div class="svc-card"><span class="svc-ico">🛡️</span><div class="svc-name">Preventive Plans</div><p class="svc-text">Monthly and quarterly programs to stay ahead of infestations year-round.</p><span class="svc-arrow">→</span></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+
+<section id="about">
+  <div class="about-left">
+    <div class="terminal-box">
+      <div class="terminal-bar">
+        <div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
+        <span class="t-title">getemgone_diagnostics.sh</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">run inspection --property home</span></div>
+        <div class="t-line"><span class="t-out warn">Scanning premises...</span></div>
+        <div class="t-line"><span class="t-out">✓ Entry points identified: 4</span></div>
+        <div class="t-line"><span class="t-out">✓ Pest activity detected: Yes</span></div>
+        <div class="t-line"><span class="t-out">✓ Treatment plan: Ready</span></div>
+        <div class="t-line">&nbsp;</div>
+        <div class="t-line"><span class="t-prompt">$ </span><span class="t-cmd">dispatch technician --eta same-day</span></div>
+        <div class="t-line"><span class="t-out">✓ Technician en route</span></div>
+        <div class="t-line"><span class="t-out dim"># Licensed · Insured · Guaranteed</span></div>
+        <div class="t-line">&nbsp;</div>
+        <div class="t-line"><span class="t-prompt">$ </span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="about-right">
+    <div class="sec-eyebrow">// About Us</div>
+    <h2 class="sec-h2">Built on<br><span>Trust.</span></h2>
+    <div class="about-body">
+      <p>GetEm Gone is a locally owned pest control company built on one principle: do the job right, every single time. We're not a franchise — we're your neighbors, and we treat your home like our own.</p>
+      <p>Our licensed technicians arrive on time, explain the plan, and don't leave until the problem is solved. No upselling, no mystery chemicals, just honest work.</p>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item">Licensed &amp; fully insured</div>
+      <div class="feature-item">Pet-safe and eco-friendly treatments</div>
+      <div class="feature-item">Same-day service available</div>
+      <div class="feature-item">Free inspections &amp; estimates</div>
+      <div class="feature-item">5+ years of experience</div>
+      <div class="feature-item">Satisfaction guaranteed — we return free</div>
+    </div>
+    <div class="about-cta" style="margin-top:2.5rem;">
+      <a href="#contact" class="btn-blue">Book a Free Inspection</a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+
+<section id="reviews">
+  <div class="sec-eyebrow">// Customer Reviews</div>
+  <h2 class="sec-h2">What Clients<br><span>Are Saying.</span></h2>
+  <p class="reviews-sub">Real feedback from real customers. We let our work speak for itself.</p>
+  <div class="reviews-grid">
+    <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"GetEm Gone showed up same day and handled a roach problem I had been dealing with for months. Professional, thorough, and totally worth it."</p><div class="review-author"><div class="review-avatar">MT</div><div><div class="review-name">Maria T.</div><div class="review-date">Verified Customer</div></div></div></div>
+    <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Had a bad mice problem in my basement. They came out, sealed everything up, and set traps. Haven't seen one since. Highly recommend!"</p><div class="review-author"><div class="review-avatar">DJ</div><div><div class="review-name">David J.</div><div class="review-date">Verified Customer</div></div></div></div>
+    <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Called about a wasp nest by my front door. They came the next morning and took care of it fast. Super friendly and explained everything."</p><div class="review-author"><div class="review-avatar">SR</div><div><div class="review-name">Sandra R.</div><div class="review-date">Verified Customer</div></div></div></div>
+    <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Best pest control I've used. Fair pricing, on time, and they actually follow up to make sure the problem is gone. Won't use anyone else."</p><div class="review-author"><div class="review-avatar">KW</div><div><div class="review-name">Kevin W.</div><div class="review-date">Verified Customer</div></div></div></div>
+    <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I had bed bugs and was mortified. They were discreet, professional, and completely solved the problem. So grateful for this team."</p><div class="review-author"><div class="review-avatar">AL</div><div><div class="review-name">Angela L.</div><div class="review-date">Verified Customer</div></div></div></div>
+    <div class="review-card review-cta-card"><div style="font-size:2.5rem;">⭐</div><h3>Happy with our service?</h3><p>Leave us a review and help other families find the pest control they need.</p><a href="https://g.page/r/review" target="_blank" class="btn-blue" style="display:inline-block;margin-top:1.2rem;font-size:0.85rem;padding:0.75rem 1.5rem;">Leave a Google Review →</a></div>
+  </div>
+  <div class="reviews-summary">
+    <div class="summary-score"><div class="score-num">5.0</div><div class="score-stars">★★★★★</div><div class="score-label">Average Rating</div></div>
+    <div class="summary-divider"></div>
+    <div class="summary-stat"><div class="s-val">100%</div><div class="s-label">Would Recommend</div></div>
+    <div class="summary-divider"></div>
+    <div class="summary-stat"><div class="s-val">500+</div><div class="s-label">Happy Customers</div></div>
+    <div class="summary-divider"></div>
+    <div class="summary-stat"><div class="s-val">48hr</div><div class="s-label">Avg. Response Time</div></div>
+  </div>
+</section>
+
+<!-- UPLOAD -->
+
+<section id="upload">
+  <div class="sec-eyebrow">// Submit Photos &amp; Videos</div>
+  <h2 class="sec-h2">Show Us the <span>Problem.</span></h2>
+  <p class="upload-sub">Not sure what you're dealing with? Upload photos or videos and we'll review them privately and get back to you with a plan.</p>
+  <div class="upload-layout">
+    <div class="upload-box">
+      <div id="upload-form-content">
+        <div class="f2-row">
+          <div class="f2-group"><label>Your Name</label><input type="text" id="upl-name" placeholder="Jane Smith"></div>
+          <div class="f2-group"><label>Phone or Email</label><input type="text" id="upl-contact" placeholder="(872) 899-0290 or email"></div>
+        </div>
+        <div class="f2-group"><label>Describe the Issue</label><textarea id="upl-desc" placeholder="Where are you seeing it? How long has this been going on?" style="min-height:70px;"></textarea></div>
+        <div class="upload-tabs">
+          <button class="upload-tab active" onclick="switchUploadTab('photos',this)">📸 Photos</button>
+          <button class="upload-tab" onclick="switchUploadTab('videos',this)">🎥 Videos</button>
+          <button class="upload-tab" onclick="switchUploadTab('both',this)">📸 + 🎥 Both</button>
+        </div>
+        <div class="upload-dropzone" id="dropzone" onclick="document.getElementById('file-input').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <div class="dz-icon" id="dz-icon">📸</div>
+          <div class="dz-text" id="dz-text">Drag &amp; drop photos here</div>
+          <div class="dz-sub" id="dz-sub">or click to browse — JPG, PNG, HEIC up to 10MB each</div>
+          <input type="file" id="file-input" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)">
+        </div>
+        <div class="upload-preview" id="preview-grid"></div>
+        <div class="file-count" id="file-count" style="display:none;"></div>
+        <div class="upload-privacy">🔒 Your files are private — only visible to GetEm Gone staff. Never shared publicly.</div>
+        <button class="btn-submit" onclick="submitUpload()">Send Files &amp; Message →</button>
+      </div>
+      <div id="upload-ok" style="display:none;text-align:center;padding:2.5rem 1rem;">
+        <div style="font-size:3rem;">📬</div>
+        <h4 style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin:0.5rem 0;">Files Received!</h4>
+        <p style="font-size:0.88rem;color:var(--silver);">We'll review and reach out within 48 hours with next steps.</p>
+      </div>
+    </div>
+    <div class="upload-info">
+      <div class="upl-tip"><div class="upl-tip-icon">📸</div><div><div class="upl-tip-title">Photo Tips</div><ul class="upl-tip-list"><li>Get close enough to see the pest clearly</li><li>Show surrounding area for context</li><li>Multiple angles help</li><li>Show droppings or entry points</li></ul></div></div>
+      <div class="upl-tip"><div class="upl-tip-icon">🎥</div><div><div class="upl-tip-title">Video Tips</div><ul class="upl-tip-list"><li>Keep under 60 seconds if possible</li><li>Pan slowly across the area</li><li>MP4, MOV, AVI accepted</li><li>Max 100MB per video</li></ul></div></div>
+      <div class="upl-tip"><div class="upl-tip-icon">⚡</div><div><div class="upl-tip-title">What Happens Next</div><ul class="upl-tip-list"><li>We review your files privately</li><li>Identify pest and assess severity</li><li>Contact you within 48 hours</li><li>Recommend best treatment plan</li></ul></div></div>
+      <div class="upl-contact-note"><span class="sat-badge">prefer to call?</span><p>Reach us directly at <strong>(872) 899-0290</strong> and describe what you're seeing.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+
+<section id="payment">
+  <div class="sec-eyebrow">// Secure Payment</div>
+  <h2 class="sec-h2">Make a <span>Payment</span></h2>
+  <p class="pay-sub">Quick, secure, and easy. Choose your preferred payment method below.</p>
+  <div class="pay-grid">
+    <div class="pay-card">
+      <div class="pay-icon">💳</div>
+      <div class="pay-name">Pay by Card</div>
+      <p class="pay-desc">Enter your service amount and pay securely by credit or debit card.</p>
+      <div id="card-form">
+        <div class="f2-group"><label>Your Name</label><input type="text" placeholder="Jane Smith"></div>
+        <div class="f2-group"><label>Invoice / Job # (optional)</label><input type="text" placeholder="e.g. 1042"></div>
+        <div class="f2-group"><label>Amount ($)</label><input type="number" placeholder="0.00" min="0" step="0.01"></div>
+        <div class="f2-group"><label>Card Number</label><input type="text" placeholder="•••• •••• •••• ••••" maxlength="19"></div>
+        <div class="f2-row">
+          <div class="f2-group"><label>Expiry</label><input type="text" placeholder="MM / YY" maxlength="7"></div>
+          <div class="f2-group"><label>CVV</label><input type="text" placeholder="•••" maxlength="4"></div>
+        </div>
+        <button class="btn-submit" onclick="submitPayment()">Submit Payment →</button>
+        <p class="pay-secure">🔒 Payments processed securely. We do not store card details.</p>
+      </div>
+      <div class="pay-ok" id="pay-ok" style="display:none;">
+        <div style="font-size:3rem;">✅</div>
+        <h4>Payment Received!</h4>
+        <p style="font-size:0.88rem;color:var(--silver);">Thank you — confirmation coming to your email shortly.</p>
+      </div>
+    </div>
+    <div class="pay-card pay-alt">
+      <div class="pay-icon">📱</div>
+      <div class="pay-name">Pay via App</div>
+      <p class="pay-desc">Prefer a mobile app? We accept all major platforms.</p>
+      <div class="pay-methods">
+        <div class="pay-method"><span class="pay-method-icon">🔵</span><div><div class="pay-method-name">Venmo</div><div class="pay-method-handle">@GetEmGonePest</div></div></div>
+        <div class="pay-method"><span class="pay-method-icon">🟣</span><div><div class="pay-method-name">Zelle</div><div class="pay-method-handle">(872) 899-0290</div></div></div>
+        <div class="pay-method"><span class="pay-method-icon">🔷</span><div><div class="pay-method-name">PayPal</div><div class="pay-method-handle"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="13547667567e547c7d76437660672a2453747e727a7f3d707c7e">[email&#160;protected]</a></div></div></div>
+      </div>
+      <div class="pay-note"><strong>Include your name and job number</strong> in the payment note so we can match it to your account.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact">
+  <div class="sec-eyebrow">// Contact</div>
+  <h2 class="sec-h2">Ready to <span>Deploy?</span></h2>
+  <div class="contact-layout">
+    <div class="c-info">
+      <h3>Reach Us</h3>
+      <div class="c-item"><div class="c-item-icon">📞</div><div><div class="c-item-label">Phone</div><div class="c-item-val">(872) 899-0290</div></div></div>
+      <div class="c-item"><div class="c-item-icon">✉️</div><div><div class="c-item-label">Email</div><div class="c-item-val">GetEmGonePest97&#64;gmail.com</div></div></div>
+      <div class="c-item"><div class="c-item-icon">🕐</div><div><div class="c-item-label">Hours</div><div class="c-item-val">Mon – Fri, 8am – 6pm</div></div></div>
+      <div class="c-item"><div class="c-item-icon">📅</div><div><div class="c-item-label">Saturday Appointments</div><div class="c-item-val">Available upon request</div></div></div>
+      <div class="saturday-note"><span class="sat-badge">weekend service</span><p>Need us on a Saturday? Weekend appointments include a <strong>small additional service fee</strong>. Contact us to schedule.</p></div>
+      <div class="guarantee"><h4>Our Guarantee</h4><p>If pests return between scheduled treatments, we come back at no extra charge. No questions asked.</p></div>
+    </div>
+    <div class="form-panel">
+      <div id="form-content">
+        <h3>Get a Free Quote</h3>
+        <p>Fill out the form and we'll be in touch within 48 hours.</p>
+        <div class="f2-row">
+          <div class="f2-group"><label>First Name</label><input type="text" placeholder="Jane"></div>
+          <div class="f2-group"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+        </div>
+        <div class="f2-row">
+          <div class="f2-group"><label>Phone</label><input type="tel" placeholder="(555) 000-0000"></div>
+          <div class="f2-group"><label>Email</label><input type="email" placeholder="jane@email.com"></div>
+        </div>
+        <div class="f2-group"><label>Type of Pest</label><select><option value="">Select a pest...</option><option>Ants</option><option>Roaches</option><option>Rodents</option><option>Bed Bugs</option><option>Spiders</option><option>Wasps / Bees</option><option>Mosquitoes / Fleas</option><option>Not sure / Other</option></select></div>
+        <div class="f2-group"><label>Details</label><textarea placeholder="Where are you seeing the problem? Any details help..."></textarea></div>
+        <button class="btn-submit" onclick="submitQuote()">Submit Request →</button>
+      </div>
+      <div class="form-ok" id="form-ok" style="display:none;">
+        <div style="font-size:3rem;">✅</div>
+        <h4>Request Received</h4>
+        <p style="font-size:0.88rem;color:var(--silver);">We'll be in touch within 48 hours. Get ready — we're coming for those pests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREERS -->
+
+<section id="careers">
+  <div class="sec-eyebrow">// Join Our Team</div>
+  <h2 class="sec-h2" style="font-size:1.8rem;">Now <span>Hiring.</span></h2>
+  <p class="careers-sub">We're growing! If you're motivated and reliable, we want to hear from you. No experience necessary — we train the right people.</p>
+  <div class="careers-layout">
+    <div class="job-card">
+      <div class="job-badge">Full-Time</div>
+      <div class="job-title">Pest Control Technician</div>
+      <p class="job-desc">Perform treatments, inspections, and exclusion work for homes and businesses.</p>
+      <div class="job-perks"><span class="perk">🚗 Company Vehicle</span><span class="perk">📜 License Training</span><span class="perk">💰 Competitive Pay</span></div>
+      <button class="appt-btn reschedule" style="margin-top:0.75rem;font-size:0.72rem;" onclick="openApp('Pest Control Technician')">Apply →</button>
+    </div>
+    <div class="job-card">
+      <div class="job-badge">Part-Time / Full-Time</div>
+      <div class="job-title">Pest Control Trainee</div>
+      <p class="job-desc">No experience needed. Learn pest control from the ground up with full on-the-job training.</p>
+      <div class="job-perks"><span class="perk">📚 Full Training</span><span class="perk">📈 Growth Path</span><span class="perk">🕐 Flexible Hours</span></div>
+      <button class="appt-btn reschedule" style="margin-top:0.75rem;font-size:0.72rem;" onclick="openApp('Pest Control Trainee')">Apply →</button>
+    </div>
+    <div class="job-card">
+      <div class="job-badge">Part-Time</div>
+      <div class="job-title">Customer Service Rep</div>
+      <p class="job-desc">Handle calls, schedule appointments, and support our growing client base.</p>
+      <div class="job-perks"><span class="perk">📞 Remote Friendly</span><span class="perk">🕐 Flexible</span><span class="perk">💬 People-Focused</span></div>
+      <button class="appt-btn reschedule" style="margin-top:0.75rem;font-size:0.72rem;" onclick="openApp('Customer Service Representative')">Apply →</button>
+    </div>
+    <div class="why-work">
+      <div class="sec-eyebrow" style="margin-bottom:0.5rem;">// Why Us?</div>
+      <ul class="why-list">
+        <li><span>💰</span><div><strong>Competitive Pay</strong></div></li>
+        <li><span>📜</span><div><strong>License Training Paid</strong></div></li>
+        <li><span>🚗</span><div><strong>Company Vehicle</strong></div></li>
+        <li><span>📈</span><div><strong>Promote From Within</strong></div></li>
+        <li><span>🤝</span><div><strong>Family Culture</strong></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-brand">GetEm<span>Gone</span> Pest Control</div>
+  <p>(872) 899-0290 &nbsp;·&nbsp; GetEmGonePest97&#64;gmail.com</p>
+  <p>© 2026 · Licensed &amp; Insured</p>
+</footer>
+
+<!-- CLIENT PORTAL MODAL -->
+
+<div class="portal-overlay" id="portal-overlay" onclick="closePortal()"></div>
+<div class="portal-modal" id="portal-modal">
+  <div class="portal-header">
+    <div class="portal-title"><span class="portal-icon">👤</span><div><div class="portal-h">Client Portal</div><div class="portal-sub">GetEm Gone Pest Control</div></div></div>
+    <button class="portal-close" onclick="closePortal()">✕</button>
+  </div>
+  <div id="portal-login">
+    <p class="portal-desc">Sign in to manage your appointments, view service history, and more.</p>
+    <div class="f2-group"><label>Email Address</label><input type="email" id="login-email" placeholder="jane@email.com"></div>
+    <div class="f2-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+    <button class="btn-submit" style="margin-top:0.5rem;" onclick="doLogin()">Sign In →</button>
+    <div class="portal-links"><span onclick="showForgot()" class="portal-link">Forgot password?</span> · <span onclick="showRegister()" class="portal-link">Create account</span></div>
+  </div>
+  <div id="portal-forgot" style="display:none;">
+    <p class="portal-desc">Enter your email and we'll send you a reset link.</p>
+    <div class="f2-group"><label>Email Address</label><input type="email" placeholder="jane@email.com"></div>
+    <button class="btn-submit" onclick="showMsg('forgot-ok')">Send Reset Link →</button>
+    <div id="forgot-ok" class="portal-msg" style="display:none;">✅ Reset link sent!</div>
+    <div class="portal-links"><span onclick="showLogin()" class="portal-link">← Back to Sign In</span></div>
+  </div>
+  <div id="portal-register" style="display:none;">
+    <p class="portal-desc">Create your client account to manage appointments online.</p>
+    <div class="f2-row"><div class="f2-group"><label>First Name</label><input type="text" placeholder="Jane"></div><div class="f2-group"><label>Last Name</label><input type="text" placeholder="Smith"></div></div>
+    <div class="f2-group"><label>Email</label><input type="email" placeholder="jane@email.com"></div>
+    <div class="f2-group"><label>Phone</label><input type="tel" placeholder="(555) 000-0000"></div>
+    <div class="f2-group"><label>Password</label><input type="password" placeholder="Create a password"></div>
+    <button class="btn-submit" onclick="doLogin()">Create Account →</button>
+    <div class="portal-links"><span onclick="showLogin()" class="portal-link">← Back to Sign In</span></div>
+  </div>
+  <div id="portal-dashboard" style="display:none;">
+    <div class="portal-welcome"><div><div class="portal-welcome-name">Welcome back, <span id="client-name">Jane</span> 👋</div><div class="portal-welcome-sub">Your service overview</div></div><button class="portal-logout" onclick="doLogout()">Sign Out</button></div>
+    <div class="portal-tabs">
+      <button class="ptab active" onclick="switchTab2('appts',this)">📅 Appointments</button>
+      <button class="ptab" onclick="switchTab2('history',this)">📋 History</button>
+      <button class="ptab" onclick="switchTab2('profile',this)">⚙️ Profile</button>
+    </div>
+    <div id="tab-appts" class="portal-tab-content">
+      <div class="appt-card"><div class="appt-status upcoming">Upcoming</div><div class="appt-service">General Pest Treatment</div><div class="appt-detail">📅 Tuesday, April 22, 2026 · 10:00 AM</div><div class="appt-detail">📍 123 Main St, Chicago IL</div><div class="appt-actions"><button class="appt-btn reschedule" onclick="showReschedule()">Reschedule</button><button class="appt-btn cancel" onclick="showCancel()">Cancel</button></div></div>
+      <div class="appt-card"><div class="appt-status upcoming">Upcoming</div><div class="appt-service">Quarterly Maintenance Plan</div><div class="appt-detail">📅 Friday, May 9, 2026 · 9:00 AM</div><div class="appt-detail">📍 123 Main St, Chicago IL</div><div class="appt-actions"><button class="appt-btn reschedule" onclick="showReschedule()">Reschedule</button><button class="appt-btn cancel" onclick="showCancel()">Cancel</button></div></div>
+      <button class="btn-submit" style="margin-top:1rem;" onclick="showBookNew()">+ Book New Appointment</button>
+    </div>
+    <div id="tab-history" class="portal-tab-content" style="display:none;">
+      <div class="appt-card"><div class="appt-status completed">Completed</div><div class="appt-service">Roach Treatment</div><div class="appt-detail">📅 January 14, 2026 · ✅ Completed</div></div>
+      <div class="appt-card"><div class="appt-status completed">Completed</div><div class="appt-service">De-Webbing + Perimeter Spray</div><div class="appt-detail">📅 October 3, 2025 · ✅ Completed</div></div>
+    </div>
+    <div id="tab-profile" class="portal-tab-content" style="display:none;">
+      <div class="f2-row"><div class="f2-group"><label>First Name</label><input type="text" value="Jane"></div><div class="f2-group"><label>Last Name</label><input type="text" value="Smith"></div></div>
+      <div class="f2-group"><label>Email</label><input type="email" value="jane@email.com"></div>
+      <div class="f2-group"><label>Phone</label><input type="tel" value="(555) 000-0000"></div>
+      <button class="btn-submit" onclick="showMsg('profile-saved')">Save Changes →</button>
+      <div id="profile-saved" class="portal-msg" style="display:none;">✅ Profile updated!</div>
+    </div>
+    <div id="reschedule-panel" class="sub-panel" style="display:none;">
+      <div class="sub-panel-title">📅 Reschedule Appointment</div>
+      <div class="f2-row"><div class="f2-group"><label>New Date</label><input type="date"></div><div class="f2-group"><label>Preferred Time</label><select><option>8:00 AM – 10:00 AM</option><option>10:00 AM – 12:00 PM</option><option>12:00 PM – 2:00 PM</option><option>2:00 PM – 4:00 PM</option></select></div></div>
+      <div style="display:flex;gap:0.75rem;margin-top:0.5rem;"><button class="btn-submit" style="flex:1;" onclick="showMsg('reschedule-ok');document.getElementById('reschedule-panel').style.display='none'">Confirm →</button><button class="appt-btn cancel" style="flex:0.4;padding:0.75rem;" onclick="document.getElementById('reschedule-panel').style.display='none'">Back</button></div>
+      <div id="reschedule-ok" class="portal-msg" style="display:none;">✅ Reschedule request sent!</div>
+    </div>
+    <div id="cancel-panel" class="sub-panel" style="display:none;">
+      <div class="sub-panel-title">⚠️ Cancel Appointment</div>
+      <div class="f2-group"><label>Reason</label><select><option value="">Select...</option><option>Scheduling conflict</option><option>Problem resolved</option><option>Need to reschedule</option><option>Other</option></select></div>
+      <div style="display:flex;gap:0.75rem;margin-top:0.75rem;"><button class="appt-btn reschedule" style="flex:1;padding:0.75rem;" onclick="showReschedule();document.getElementById('cancel-panel').style.display='none'">Reschedule Instead</button><button class="appt-btn cancel" style="flex:1;padding:0.75rem;" onclick="showMsg('cancel-ok');document.getElementById('cancel-panel').style.display='none'">Confirm Cancel</button></div>
+      <div id="cancel-ok" class="portal-msg" style="display:none;">✅ Appointment cancelled.</div>
+      <div style="margin-top:0.5rem;"><span onclick="document.getElementById('cancel-panel').style.display='none'" class="portal-link">← Back</span></div>
+    </div>
+    <div id="book-new-panel" class="sub-panel" style="display:none;">
+      <div class="sub-panel-title">+ Book New Appointment</div>
+      <div class="f2-group"><label>Service Type</label><select><option value="">Select...</option><option>Bed Bugs</option><option>Roaches</option><option>Mice &amp; Rats</option><option>Ants</option><option>Bees &amp; Wasps</option><option>General Treatment</option><option>Preventive Plan</option></select></div>
+      <div class="f2-row"><div class="f2-group"><label>Preferred Date</label><input type="date"></div><div class="f2-group"><label>Preferred Time</label><select><option>8:00 AM – 10:00 AM</option><option>10:00 AM – 12:00 PM</option><option>12:00 PM – 2:00 PM</option><option>2:00 PM – 4:00 PM</option></select></div></div>
+      <div style="display:flex;gap:0.75rem;margin-top:0.5rem;"><button class="btn-submit" style="flex:1;" onclick="showMsg('book-ok');document.getElementById('book-new-panel').style.display='none'">Request Appointment →</button><button class="appt-btn cancel" style="flex:0.4;padding:0.75rem;" onclick="document.getElementById('book-new-panel').style.display='none'">Back</button></div>
+      <div id="book-ok" class="portal-msg" style="display:none;">✅ Request sent! We'll confirm within 48 hours.</div>
+    </div>
+  </div>
+</div>
+
+<!-- OWNER MODAL -->
+
+<div class="portal-overlay" id="owner-overlay" onclick="closeOwner()"></div>
+<div class="portal-modal" id="owner-modal">
+  <div class="portal-header">
+    <div class="portal-title"><span class="portal-icon">🔑</span><div><div class="portal-h">Owner Access</div><div class="portal-sub">GetEm Gone Pest Control</div></div></div>
+    <button class="portal-close" onclick="closeOwner()">✕</button>
+  </div>
+  <div id="owner-login">
+    <p class="portal-desc">This area is restricted to the business owner.</p>
+    <div class="f2-group"><label>Owner Email</label><input type="email" placeholder="owner@getemgone.com"></div>
+    <div class="f2-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+    <button class="btn-submit" onclick="doOwnerLogin()">Sign In →</button>
+  </div>
+  <div id="owner-dashboard" style="display:none;">
+    <div class="portal-welcome"><div><div class="portal-welcome-name">Owner Dashboard 🔑</div><div class="portal-welcome-sub">GetEm Gone Pest Control</div></div><button class="portal-logout" onclick="doOwnerLogout()">Sign Out</button></div>
+    <div class="portal-tabs">
+      <button class="ptab active" onclick="switchOwnerTab('appointments',this)">📅 Appts</button>
+      <button class="ptab" onclick="switchOwnerTab('clients',this)">👥 Clients</button>
+      <button class="ptab" onclick="switchOwnerTab('applications',this)">💼 Jobs</button>
+      <button class="ptab" onclick="switchOwnerTab('settings',this)">⚙️ Settings</button>
+    </div>
+    <div id="owner-tab-appointments" class="owner-tab-content">
+      <div class="owner-stat-row"><div class="owner-stat"><div class="owner-stat-n">4</div><div class="owner-stat-l">This Week</div></div><div class="owner-stat"><div class="owner-stat-n">12</div><div class="owner-stat-l">This Month</div></div><div class="owner-stat"><div class="owner-stat-n">2</div><div class="owner-stat-l">Pending</div></div></div>
+      <div class="appt-card" style="margin-top:1rem;"><div class="appt-status upcoming">Today</div><div class="appt-service">Roach Treatment</div><div class="appt-detail">👤 David Johnson · 10:00 AM</div><div class="appt-detail">📍 4521 Oak Ave, Chicago IL</div></div>
+      <div class="appt-card"><div class="appt-status" style="background:rgba(251,191,36,0.15);color:#fbbf24;">Pending</div><div class="appt-service">Bed Bug Inspection</div><div class="appt-detail">👤 Angela Lewis · Requested: Apr 25</div><div class="appt-actions"><button class="appt-btn reschedule" onclick="showMsg('confirm-ok')">Confirm</button><button class="appt-btn cancel">Decline</button></div><div id="confirm-ok" class="portal-msg" style="display:none;">✅ Confirmed!</div></div>
+    </div>
+    <div id="owner-tab-clients" class="owner-tab-content" style="display:none;">
+      <div class="owner-client-list">
+        <div class="owner-client"><div class="owner-client-name">Maria Torres</div><div class="owner-client-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5b313a353e1b3e363a323775383436">[email&#160;protected]</a> · (555) 000-0000 · 3 appointments</div></div>
+        <div class="owner-client"><div class="owner-client-name">David Johnson</div><div class="owner-client-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89ede8ffe0edc9ece4e8e0e5a7eae6e4">[email&#160;protected]</a> · (555) 111-2222 · 1 appointment</div></div>
+        <div class="owner-client"><div class="owner-client-name">Angela Lewis</div><div class="owner-client-info"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2849464f4d4449684d45494144064b4745">[email&#160;protected]</a> · (555) 333-4444 · 2 appointments</div></div>
+      </div>
+    </div>
+    <div id="owner-tab-applications" class="owner-tab-content" style="display:none;">
+      <div class="appt-card"><div class="appt-status" style="background:rgba(251,191,36,0.15);color:#fbbf24;">New</div><div class="appt-service">Kevin Wright</div><div class="appt-detail">📋 Pest Control Technician · 1–3 yrs exp</div><div class="appt-detail">📞 (555) 888-9999</div><div class="appt-actions"><button class="appt-btn reschedule" onclick="showMsg('app-ok')">Schedule Interview</button><button class="appt-btn cancel">Decline</button></div><div id="app-ok" class="portal-msg" style="display:none;">✅ Interview request sent!</div></div>
+      <div class="appt-card"><div class="appt-status" style="background:rgba(251,191,36,0.15);color:#fbbf24;">New</div><div class="appt-service">Tanya Brooks</div><div class="appt-detail">📋 Pest Control Trainee · No experience</div><div class="appt-detail">📞 (555) 222-7777</div><div class="appt-actions"><button class="appt-btn reschedule">Schedule Interview</button><button class="appt-btn cancel">Decline</button></div></div>
+    </div>
+    <div id="owner-tab-settings" class="owner-tab-content" style="display:none;">
+      <div class="f2-group"><label>Business Name</label><input type="text" value="GetEm Gone Pest Control"></div>
+      <div class="f2-group"><label>Phone</label><input type="tel" value="(872) 899-0290"></div>
+      <div class="f2-group"><label>Email</label><input type="email" value="GetEmGonePest97@gmail.com"></div>
+      <div class="f2-group"><label>Business Hours</label><input type="text" value="Mon – Fri, 8am – 6pm"></div>
+      <button class="btn-submit" onclick="showMsg('settings-saved')">Save Settings →</button>
+      <div id="settings-saved" class="portal-msg" style="display:none;">✅ Settings saved!</div>
+    </div>
+  </div>
+</div>
+
+<!-- APPLICATION MODAL -->
+
+<div class="portal-overlay" id="app-overlay" onclick="closeApp()"></div>
+<div class="portal-modal" id="app-modal">
+  <div class="portal-header">
+    <div class="portal-title"><span class="portal-icon">💼</span><div><div class="portal-h">Apply Now</div><div class="portal-sub" id="app-position-label">GetEm Gone Pest Control</div></div></div>
+    <button class="portal-close" onclick="closeApp()">✕</button>
+  </div>
+  <div id="app-form-content">
+    <p class="portal-desc">Fill out the form and we'll be in touch within 48 hours!</p>
+    <div class="f2-row"><div class="f2-group"><label>First Name</label><input type="text" placeholder="Jane"></div><div class="f2-group"><label>Last Name</label><input type="text" placeholder="Smith"></div></div>
+    <div class="f2-row"><div class="f2-group"><label>Phone</label><input type="tel" placeholder="(555) 000-0000"></div><div class="f2-group"><label>Email</label><input type="email" placeholder="jane@email.com"></div></div>
+    <div class="f2-group"><label>Position Applying For</label><select id="app-position-select"><option>Pest Control Technician</option><option>Pest Control Trainee</option><option>Customer Service Representative</option><option>Other</option></select></div>
+    <div class="f2-group"><label>Experience</label><select><option>No experience — willing to train</option><option>Less than 1 year</option><option>1–3 years</option><option>3+ years</option></select></div>
+    <div class="f2-group"><label>Driver's License?</label><select><option>Yes</option><option>No</option></select></div>
+    <div class="f2-group"><label>Availability</label><select><option>Full-Time</option><option>Part-Time</option><option>Either / Flexible</option></select></div>
+    <div class="f2-group"><label>Tell Us About Yourself</label><textarea placeholder="Why do you want to work with GetEm Gone?" style="min-height:80px;"></textarea></div>
+    <button class="btn-submit" onclick="submitApp()">Submit Application →</button>
+  </div>
+  <div id="app-success" style="display:none;text-align:center;padding:2rem 1rem;">
+    <div style="font-size:3rem;">🎉</div>
+    <h4 style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin:0.5rem 0;">Application Sent!</h4>
+    <p style="font-size:0.88rem;color:var(--silver);line-height:1.6;">Thanks for your interest! We'll review and reach out within 48 hours.</p>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+// QUOTE FORM
+function submitQuote(){document.getElementById(‘form-content’).style.display=‘none’;document.getElementById(‘form-ok’).style.display=‘block’;}
+
+// PAYMENT
+function submitPayment(){document.getElementById(‘card-form’).style.display=‘none’;document.getElementById(‘pay-ok’).style.display=‘block’;}
+
+// UPLOAD
+var uploadedFiles=[];var currentMode=‘photos’;
+function switchUploadTab(mode,btn){currentMode=mode;document.querySelectorAll(’.upload-tab’).forEach(function(t){t.classList.remove(‘active’);});btn.classList.add(‘active’);var input=document.getElementById(‘file-input’);var icon=document.getElementById(‘dz-icon’);var text=document.getElementById(‘dz-text’);var sub=document.getElementById(‘dz-sub’);if(mode===‘photos’){input.accept=‘image/*’;icon.textContent=‘📸’;text.textContent=‘Drag & drop photos here’;sub.textContent=‘or click to browse — JPG, PNG, HEIC up to 10MB each’;}else if(mode===‘videos’){input.accept=’video/*’;icon.textContent=‘🎥’;text.textContent=‘Drag & drop videos here’;sub.textContent=‘or click to browse — MP4, MOV, AVI up to 100MB each’;}else{input.accept=‘image/*,video/*’;icon.textContent=‘📸’;text.textContent=‘Drag & drop photos or videos here’;sub.textContent=‘or click to browse — images up to 10MB · videos up to 100MB’;}}
+function handleFiles(files){Array.from(files).forEach(function(file){uploadedFiles.push(file);var grid=document.getElementById(‘preview-grid’);var thumb=document.createElement(‘div’);var idx=uploadedFiles.length-1;if(file.type.startsWith(‘image/’)){thumb.className=‘preview-thumb’;var reader=new FileReader();reader.onload=function(e){thumb.innerHTML=’<img src="'+e.target.result+'"><button class="remove-btn" onclick="removeFile('+idx+',this)">x</button>’;};reader.readAsDataURL(file);}else if(file.type.startsWith(‘video/’)){thumb.className=‘preview-thumb video-thumb’;thumb.innerHTML=’<div class="video-icon">🎥</div><div class="video-label">VIDEO</div><button class="remove-btn" onclick="removeFile('+idx+',this)">x</button>’;}grid.appendChild(thumb);updateCount();});}
+function updateCount(){var cnt=document.getElementById(‘file-count’);if(uploadedFiles.length>0){var imgs=uploadedFiles.filter(function(f){return f.type.startsWith(‘image/’);}).length;var vids=uploadedFiles.filter(function(f){return f.type.startsWith(‘video/’);}).length;var msg=[];if(imgs)msg.push(imgs+’ photo’+(imgs>1?‘s’:’’));if(vids)msg.push(vids+’ video’+(vids>1?‘s’:’’));cnt.textContent=‘✓ ‘+msg.join(’ + ‘)+’ selected’;cnt.style.display=‘block’;}else{cnt.style.display=‘none’;}}
+function removeFile(idx,btn){uploadedFiles.splice(idx,1);btn.closest(’.preview-thumb’).remove();updateCount();}
+function handleDragOver(e){e.preventDefault();document.getElementById(‘dropzone’).classList.add(‘drag-over’);}
+function handleDragLeave(e){document.getElementById(‘dropzone’).classList.remove(‘drag-over’);}
+function handleDrop(e){e.preventDefault();document.getElementById(‘dropzone’).classList.remove(‘drag-over’);handleFiles(e.dataTransfer.files);}
+function submitUpload(){document.getElementById(‘upload-form-content’).style.display=‘none’;document.getElementById(‘upload-ok’).style.display=‘block’;}
+
+// CLIENT PORTAL
+function openPortal(){document.getElementById(‘portal-overlay’).classList.add(‘open’);document.getElementById(‘portal-modal’).classList.add(‘open’);document.body.style.overflow=‘hidden’;}
+function closePortal(){document.getElementById(‘portal-overlay’).classList.remove(‘open’);document.getElementById(‘portal-modal’).classList.remove(‘open’);document.body.style.overflow=’’;}
+function showLogin(){document.getElementById(‘portal-login’).style.display=‘block’;document.getElementById(‘portal-forgot’).style.display=‘none’;document.getElementById(‘portal-register’).style.display=‘none’;document.getElementById(‘portal-dashboard’).style.display=‘none’;}
+function showForgot(){document.getElementById(‘portal-login’).style.display=‘none’;document.getElementById(‘portal-forgot’).style.display=‘block’;}
+function showRegister(){document.getElementById(‘portal-login’).style.display=‘none’;document.getElementById(‘portal-register’).style.display=‘block’;}
+function doLogin(){var email=document.getElementById(‘login-email’);var name=email&&email.value?email.value.split(’@’)[0]:‘Jane’;document.getElementById(‘client-name’).textContent=name.charAt(0).toUpperCase()+name.slice(1);document.getElementById(‘portal-login’).style.display=‘none’;document.getElementById(‘portal-forgot’).style.display=‘none’;document.getElementById(‘portal-register’).style.display=‘none’;document.getElementById(‘portal-dashboard’).style.display=‘block’;}
+function doLogout(){document.getElementById(‘portal-dashboard’).style.display=‘none’;document.getElementById(‘portal-login’).style.display=‘block’;hidePanels();}
+function switchTab2(tab,btn){document.querySelectorAll(’.portal-tab-content’).forEach(function(t){t.style.display=‘none’;});document.querySelectorAll(’#portal-modal .ptab’).forEach(function(t){t.classList.remove(‘active’);});document.getElementById(‘tab-’+tab).style.display=‘block’;btn.classList.add(‘active’);hidePanels();}
+function showReschedule(){hidePanels();document.getElementById(‘reschedule-panel’).style.display=‘block’;}
+function showCancel(){hidePanels();document.getElementById(‘cancel-panel’).style.display=‘block’;}
+function showBookNew(){hidePanels();document.getElementById(‘book-new-panel’).style.display=‘block’;}
+function hidePanels(){[‘reschedule-panel’,‘cancel-panel’,‘book-new-panel’].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=‘none’;});}
+
+// OWNER
+function openOwner(){document.getElementById(‘owner-overlay’).classList.add(‘open’);document.getElementById(‘owner-modal’).classList.add(‘open’);document.body.style.overflow=‘hidden’;}
+function closeOwner(){document.getElementById(‘owner-overlay’).classList.remove(‘open’);document.getElementById(‘owner-modal’).classList.remove(‘open’);document.body.style.overflow=’’;}
+function doOwnerLogin(){document.getElementById(‘owner-login’).style.display=‘none’;document.getElementById(‘owner-dashboard’).style.display=‘block’;}
+function doOwnerLogout(){document.getElementById(‘owner-dashboard’).style.display=‘none’;document.getElementById(‘owner-login’).style.display=‘block’;}
+function switchOwnerTab(tab,btn){document.querySelectorAll(’.owner-tab-content’).forEach(function(t){t.style.display=‘none’;});document.querySelectorAll(’#owner-modal .ptab’).forEach(function(t){t.classList.remove(‘active’);});document.getElementById(‘owner-tab-’+tab).style.display=‘block’;btn.classList.add(‘active’);}
+
+// CAREERS
+function openApp(position){document.getElementById(‘app-overlay’).classList.add(‘open’);document.getElementById(‘app-modal’).classList.add(‘open’);document.getElementById(‘app-position-label’).textContent=position;document.getElementById(‘app-position-select’).value=position;document.getElementById(‘app-form-content’).style.display=‘block’;document.getElementById(‘app-success’).style.display=‘none’;document.body.style.overflow=‘hidden’;}
+function closeApp(){document.getElementById(‘app-overlay’).classList.remove(‘open’);document.getElementById(‘app-modal’).classList.remove(‘open’);document.body.style.overflow=’’;}
+function submitApp(){document.getElementById(‘app-form-content’).style.display=‘none’;document.getElementById(‘app-success’).style.display=‘block’;}
+
+// SHARED MSG
+function showMsg(id){var el=document.getElementById(id);
+
+</html>
